@@ -3,11 +3,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { StockInfoModule } from './modules/stockInfoList/stockInfo.module';
 import { StockInfo } from './modules/stockInfoList/stockInfo.entity';
+import { RedisModule } from '@nestjs-modules/ioredis';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true, // アプリケーション全体でConfigModuleを利用可能にします
+      isGlobal: true, // アプリケーション全体でConfigModuleを利用可能
     }),
     TypeOrmModule.forRootAsync({
       useFactory: (config: ConfigService) => ({
@@ -21,6 +22,10 @@ import { StockInfo } from './modules/stockInfoList/stockInfo.entity';
         synchronize: true,
       }),
       inject: [ConfigService],
+    }),
+    RedisModule.forRoot({
+      type: 'single',
+      url: 'redis://127.0.0.1:6379',
     }),
     StockInfoModule,
   ],

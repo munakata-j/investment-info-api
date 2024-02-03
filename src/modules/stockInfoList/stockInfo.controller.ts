@@ -1,7 +1,7 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { StockInfoService } from './stockInfo.service';
 import { StockInfo } from './stockInfo.entity';
-import { ResponseDto } from "./dto/response.dto";
+import { ResponseDto } from './dto/response.dto';
 
 @Controller('stockInfo')
 export class StockInfoController {
