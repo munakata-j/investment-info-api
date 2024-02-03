@@ -45,6 +45,8 @@ export class StockInfoService {
       .take(pageSize) // 1ページあたりのレコード数
       .getMany(); // レコードを取得
 
+    // 外部APIにアクセス（時価と財務データを取得）
+
     const stockInfos = res.map(
       (d) =>
         new GetStockInfoDto({
