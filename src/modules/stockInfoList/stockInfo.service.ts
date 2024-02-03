@@ -2,23 +2,22 @@ import { Injectable } from '@nestjs/common';
 import { StockInfo } from './stockInfo.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { GetStockInfoDto } from "./dto/get-stockInfo.dto";
-import { ResponseDto } from "./dto/response.dto";
+import { GetStockInfoDto } from './dto/get-stockInfo.dto';
+import { ResponseDto } from './dto/response.dto';
 
 @Injectable()
 export class StockInfoService {
   constructor(
     @InjectRepository(StockInfo)
     private StockInfoRepository: Repository<StockInfo>,
-  ) {
-  }
+  ) {}
 
   async findAll(
     code?: string,
     companyname?: string,
     selectorCode?: string,
     //page?: number
-    page = 1
+    page = 1,
   ): Promise<ResponseDto> {
     const queryBuilder = this.StockInfoRepository.createQueryBuilder();
     const pageSize: number = 10;
@@ -34,7 +33,7 @@ export class StockInfoService {
 
     if (selectorCode) {
       queryBuilder.andWhere('jp_stockInfo.selectorCode = :selectorCode', {
-        selectorCode
+        selectorCode,
       });
     }
 
@@ -46,16 +45,19 @@ export class StockInfoService {
       .take(pageSize) // 1ページあたりのレコード数
       .getMany(); // レコードを取得
 
-    const stockInfos = res.map(d => new GetStockInfoDto({
-      code: d.code,
-      companyname: d.companyname,
-      id: parseInt(d.id),
-      marketcode: d.marketcode,
-      marketcodename: d.marketcodename,
-      marketprice: 0,
-      sector17code: d.sector17code,
-      sector17codename: d.sector17codename
-    }));
+    const stockInfos = res.map(
+      (d) =>
+        new GetStockInfoDto({
+          code: d.code,
+          companyname: d.companyname,
+          id: parseInt(d.id),
+          marketcode: d.marketcode,
+          marketcodename: d.marketcodename,
+          marketprice: 0,
+          sector17code: d.sector17code,
+          sector17codename: d.sector17codename,
+        }),
+    );
     return new ResponseDto(stockInfos, totalSize, page);
   }
 }
