@@ -4,25 +4,27 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetStockInfoDto } from './dto/get-stockInfo.dto';
 import { ResponseDto } from './dto/response.dto';
-import { getMarketPrice } from '../../service/external-api';
+import { getFinancialData, getMarketPrice } from '../../service/external-api';
 import { MarketDataService } from './market-data.service';
+import { calculateFinancialIndicators } from '../../utils/common';
 
 @Injectable()
 export class StockInfoService {
   constructor(
     @InjectRepository(StockInfo)
     private stockInfoRepository: Repository<StockInfo>,
-    private marketDataService: MarketDataService
+    private marketDataService: MarketDataService,
   ) {}
 
   async findAll(
     code?: string,
     companyname?: string,
-    selectorCode?: string,
+    sector17code?: string,
     //page?: number
     page = 1,
   ): Promise<ResponseDto> {
-    const queryBuilder = this.stockInfoRepository.createQueryBuilder('jp_stockinfo');
+    const queryBuilder =
+      this.stockInfoRepository.createQueryBuilder('jp_stockinfo');
 
     const pageSize: number = 10;
     if (code) {
@@ -35,9 +37,9 @@ export class StockInfoService {
       });
     }
 
-    if (selectorCode) {
-      queryBuilder.andWhere('jp_stockInfo.selectorCode = :selectorCode', {
-        selectorCode,
+    if (sector17code) {
+      queryBuilder.andWhere('jp_stockInfo.sector17code = :sector17code', {
+        sector17code,
       });
     }
 
@@ -49,22 +51,20 @@ export class StockInfoService {
       .take(pageSize) // 1ページあたりのレコード数
       .getMany(); // レコードを取得
 
-    //レコード数ループして時価を取得する必要あり
-    // 外部APIにアクセス（時価と財務データを取得）
-    // const marketPrice = await getMarketPrice(code);
-    // console.log('<<<<<<<<<<<<<<<', marketPrice);
-    // // Redisに保存
-    // await this.marketDataService.saveMarketData(marketPrice);
-    // const val = await this.marketDataService.getMarketData(code);
-    // console.log('redis val ->', val);
-
     const stockInfosPromises = res.map(async (d) => {
+      //時価取得
       const marketPrice = await getMarketPrice(d.code);
-      console.log('<<<<<<<<<<<<<<<', marketPrice);
+
+      //財務データ取得
+      const financialData = await getFinancialData(d.code);
+
+      const financialFormatData = calculateFinancialIndicators(
+        financialData,
+        marketPrice[0].Close ? marketPrice[0].Close : 0,
+      );
+
       // Redisに保存
-      await this.marketDataService.saveMarketData(marketPrice[0], d.code);
-      const val = await this.marketDataService.getMarketData(d.code);
-      console.log('redis val ->', val);
+      await this.marketDataService.saveMarketData(financialFormatData, d.code);
 
       return new GetStockInfoDto({
         code: d.code,

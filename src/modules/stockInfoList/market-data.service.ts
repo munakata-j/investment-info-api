@@ -16,4 +16,15 @@ export class MarketDataService {
     const data = await this.redis.get(key);
     return JSON.parse(data);
   }
+
+  async saveFinancialRedisData(data: any, code: string) {
+    const key = `financialData_code:${code}`;
+    await this.redis.set(key, JSON.stringify(data));
+  }
+
+  async getFinancialRedisData(code: string) {
+    const key = `financialData_code:${code}`;
+    const data = await this.redis.get(key);
+    return JSON.parse(data);
+  }
 }
