@@ -49,7 +49,6 @@ const getToken = async (refToken) => {
 // 1. 検索処理＝銘柄一覧取得処理時にJ-Quantsから財務データと時価を取得
 // 2. Redisに保存
 export async function getMarketPrice(code: string) {
-  //console.log("<<<<<<<<<<<<<<<< code: ", code)
   //API認証トークン取得
   const refreashToken = await getAuthTokenId();
   const tokenId = await getToken(refreashToken);

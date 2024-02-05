@@ -23,6 +23,7 @@ export function formatDateToYYYYMMDD(
 
 export function calculateFinancialIndicators(
   data: any,
+  stockBaseData: any,
   closePrice: number,
 ): FinancialMetrics {
   // 営業利益率の計算
@@ -51,13 +52,25 @@ export function calculateFinancialIndicators(
     : '0';
 
   return {
+    code: stockBaseData?.code,
+    companyname: stockBaseData?.companyname,
+    sectorCode: stockBaseData?.sector17code,
+    sectorName: stockBaseData?.sector17codename,
     NetSales: data?.NetSales, // 売上高
     OperatingProfit: data?.OperatingProfit, // 営業利益
+    Profit: data?.Profit, //純利益
     OperatingProfitMargin: operatingProfitMargin, // 営業利益率
+    Equity: data?.Equity, //純資産
+    TotalAssets: data?.TotalAssets, //総資産
     PER: parseFloat(per), // PER
     DividendYield: dividendYield, // 配当利回り
     EquityToAssetRatio: equityToAssetRatio, // 自己資本比率
     PBR: parseFloat(pbr), // PBR
     ClosePrice: closePrice, //株価
+    CashAndEquivalents: data?.CashAndEquivalents, //現金および同等物
+    CashFlowsFromFinancingActivities: data?.CashFlowsFromFinancingActivities,
+    CashFlowsFromInvestingActivities: data?.CashFlowsFromInvestingActivities,
+    CashFlowsFromOperatingActivities: data?.CashFlowsFromOperatingActivities,
+    DisclosedData: data?.DisclosedData,
   };
 }

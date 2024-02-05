@@ -60,7 +60,8 @@ export class StockInfoService {
 
       const financialFormatData = calculateFinancialIndicators(
         financialData,
-        marketPrice[0].Close ? marketPrice[0].Close : 0,
+        d,
+        marketPrice[0]?.Close ? marketPrice[0]?.Close : 0,
       );
 
       // Redisに保存

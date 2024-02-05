@@ -1,4 +1,4 @@
-import { GetStockInfoDto } from "./get-stockInfo.dto";
+import { GetStockInfoDto } from './get-stockInfo.dto';
 
 export class ResponseDto {
   data: GetStockInfoDto[];
