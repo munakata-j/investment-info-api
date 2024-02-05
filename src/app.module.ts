@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { StockInfoModule } from './modules/stockInfoList/stockInfo.module';
 import { StockInfo } from './modules/stockInfoList/stockInfo.entity';
 import { RedisModule } from '@nestjs-modules/ioredis';
+import { exportToCsvModule } from "./modules/exportToCsv/exportToCsv.module";
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { RedisModule } from '@nestjs-modules/ioredis';
       url: 'redis://127.0.0.1:6379',
     }),
     StockInfoModule,
+    exportToCsvModule,
   ],
 })
 export class AppModule {}
