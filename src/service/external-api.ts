@@ -99,7 +99,7 @@ export async function getFinancialData(code: string) {
       },
     });
     const jsonData = await response.json();
-    const fyFinancialStatements = jsonData.statements.filter(
+    const fyFinancialStatements = jsonData.statements?.filter(
       (statement) =>
         statement.TypeOfDocument ===
           'FYFinancialStatements_Consolidated_IFRS' ||
@@ -107,12 +107,14 @@ export async function getFinancialData(code: string) {
         statement.TypeOfDocument === 'FYFinancialStatements_Consolidated_US',
     );
 
-    const sortedStatements = fyFinancialStatements.sort((a, b) => {
+    const sortedStatements = fyFinancialStatements?.sort((a, b) => {
       const dateA = new Date(a.DisclosedDate);
       const dateB = new Date(b.DisclosedDate);
       return dateB.getTime() - dateA.getTime();
     });
-
+    if (!sortedStatements || sortedStatements.length === 0) {
+      return null;
+    }
     return sortedStatements[0];
   } catch (error) {
     console.log('Error:', error);

@@ -26,7 +26,7 @@ export class StockInfoService {
     const queryBuilder =
       this.stockInfoRepository.createQueryBuilder('jp_stockinfo');
 
-    const pageSize: number = 10;
+    const pageSize: number = 100;
     if (code) {
       queryBuilder.andWhere('jp_stockInfo.code = :code', { code });
     }
@@ -52,16 +52,29 @@ export class StockInfoService {
       .getMany(); // レコードを取得
 
     const stockInfosPromises = res.map(async (d) => {
-      //時価取得
-      const marketPrice = await getMarketPrice(d.code);
+      let marketPrice;
+      let financialData;
 
-      //財務データ取得
-      const financialData = await getFinancialData(d.code);
+      // 時価取得
+      try {
+        marketPrice = await getMarketPrice(d.code);
+      } catch (error) {
+        console.error(`Error fetching market price for code ${d.code}:`, error);
+        return null;
+      }
+
+      // 財務データ取得
+      try {
+        financialData = await getFinancialData(d.code);
+      } catch (error) {
+        console.error(`Error fetching financial data for code ${d.code}:`, error);
+        return null; // または適切なデフォルト値を返す
+      }
 
       const financialFormatData = calculateFinancialIndicators(
         financialData,
         d,
-        marketPrice[0]?.Close ? marketPrice[0]?.Close : 0,
+        marketPrice?.[0]?.Close ? marketPrice[0].Close : 0,
       );
 
       // Redisに保存
@@ -75,8 +88,9 @@ export class StockInfoService {
         marketcodename: d.marketcodename,
         marketprice: marketPrice,
         sector17code: d.sector17code,
-        sector17codename: d.sector17codename,
-      });
+        sector17codename: d.sector17codename, });
+
+
     });
     const stockInfos = await Promise.all(stockInfosPromises);
     return new ResponseDto(stockInfos, totalSize, page);
