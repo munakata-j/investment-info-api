@@ -4,7 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { StockInfoModule } from './modules/stockInfoList/stockInfo.module';
 import { StockInfo } from './modules/stockInfoList/stockInfo.entity';
 import { RedisModule } from '@nestjs-modules/ioredis';
-import { exportToCsvModule } from "./modules/exportToCsv/exportToCsv.module";
+import { exportToCsvModule } from './modules/exportToCsv/exportToCsv.module';
 
 @Module({
   imports: [

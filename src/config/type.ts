@@ -14,6 +14,7 @@ export interface FinancialMetrics {
   companyname: string;
   sectorCode: string;
   sectorName: string;
+  marketName: string;
   NetSales: number;
   OperatingProfit: number;
   Profit: number;

@@ -56,6 +56,7 @@ export function calculateFinancialIndicators(
     companyname: stockBaseData?.companyname,
     sectorCode: stockBaseData?.sector17code,
     sectorName: stockBaseData?.sector17codename,
+    marketName: stockBaseData?.marketcodename,
     NetSales: data?.NetSales, // 売上高
     OperatingProfit: data?.OperatingProfit, // 営業利益
     Profit: data?.Profit, //純利益

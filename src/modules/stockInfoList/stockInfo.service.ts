@@ -67,8 +67,11 @@ export class StockInfoService {
       try {
         financialData = await getFinancialData(d.code);
       } catch (error) {
-        console.error(`Error fetching financial data for code ${d.code}:`, error);
-        return null; // または適切なデフォルト値を返す
+        console.error(
+          `Error fetching financial data for code ${d.code}:`,
+          error,
+        );
+        return null;
       }
 
       const financialFormatData = calculateFinancialIndicators(
@@ -88,9 +91,8 @@ export class StockInfoService {
         marketcodename: d.marketcodename,
         marketprice: marketPrice,
         sector17code: d.sector17code,
-        sector17codename: d.sector17codename, });
-
-
+        sector17codename: d.sector17codename,
+      });
     });
     const stockInfos = await Promise.all(stockInfosPromises);
     return new ResponseDto(stockInfos, totalSize, page);

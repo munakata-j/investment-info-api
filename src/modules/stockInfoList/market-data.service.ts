@@ -27,4 +27,12 @@ export class MarketDataService {
     const data = await this.redis.get(key);
     return JSON.parse(data);
   }
+
+  async flushDb(): Promise<void> {
+    await this.redis.flushdb();
+  }
+
+  async flushAll(): Promise<void> {
+    await this.redis.flushall();
+  }
 }
