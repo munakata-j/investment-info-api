@@ -13,10 +13,6 @@ export class exportToCsvController {
 
       res.status(HttpStatus.OK);
       res.header('Content-Type', '');
-      res.header(
-        'Content-Disposition',
-        'attachment; filename="financial_data.csv"',
-      );
       res.send({
         code: '200',
         msg: '',

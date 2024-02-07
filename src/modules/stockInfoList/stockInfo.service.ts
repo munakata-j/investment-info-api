@@ -20,9 +20,9 @@ export class StockInfoService {
     code?: string,
     companyname?: string,
     sector17code?: string,
-    //page?: number
-    page = 1,
+    page?: number,
   ): Promise<ResponseDto> {
+    page = page ? page : 1;
     const queryBuilder =
       this.stockInfoRepository.createQueryBuilder('jp_stockinfo');
 
@@ -95,6 +95,6 @@ export class StockInfoService {
       });
     });
     const stockInfos = await Promise.all(stockInfosPromises);
-    return new ResponseDto(stockInfos, totalSize, page);
+    return new ResponseDto(stockInfos, totalSize, page, '200', '');
   }
 }
