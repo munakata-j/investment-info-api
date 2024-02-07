@@ -5,7 +5,7 @@ import { StockInfoModule } from './modules/stockInfoList/stockInfo.module';
 import { StockInfo } from './modules/stockInfoList/stockInfo.entity';
 import { RedisModule } from '@nestjs-modules/ioredis';
 import { exportToCsvModule } from './modules/exportToCsv/exportToCsv.module';
-import { StockInfoDetailModule } from "./modules/stockInfoDetail/stockInfoDetail.module";
+import { StockInfoDetailModule } from './modules/stockInfoDetail/stockInfoDetail.module';
 
 @Module({
   imports: [
@@ -19,7 +19,7 @@ import { StockInfoDetailModule } from "./modules/stockInfoDetail/stockInfoDetail
         host: process.env.DATABASE_HOST,
         port: +process.env.DATABASE_PORT,
         username: process.env.DATABASE_USERNAME || 'postgres',
-        password: process.env.DATABASE_PASSWORD || 'haru-0612',
+        password: process.env.DATABASE_PASSWORD,
         database: process.env.DATABASE_NAME,
         synchronize: true,
       }),
