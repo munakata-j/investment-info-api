@@ -1,7 +1,7 @@
-import { Controller, Get, Post, Query } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Post, Query, Res } from '@nestjs/common';
 import { StockInfoService } from './stockInfo.service';
-import { ResponseDto } from './dto/response.dto';
 import { MarketDataService } from './market-data.service';
+import { Response } from 'express';
 
 @Controller('stockInfo')
 export class StockInfoController {
@@ -11,19 +11,34 @@ export class StockInfoController {
   ) {}
 
   @Get()
-  findAll(
+  async findAll(
+    @Res() res: Response,
     @Query('code') code?: string,
     @Query('companyname') companyname?: string,
     @Query('sector17code') sector17code?: string,
     @Query('page') page?: number,
-  ): Promise<ResponseDto> {
-    const res = this.stockInfoService.findAll(
-      code,
-      companyname,
-      sector17code,
-      page,
-    );
-    return res;
+  ) {
+    try {
+      const stockInfo = await this.stockInfoService.findAll(
+        code,
+        companyname,
+        sector17code,
+        page,
+      );
+      res.status(HttpStatus.OK);
+      res.header('Content-Type', 'application/json');
+      res.send({
+        code: '200',
+        msg: '',
+        data: stockInfo,
+      });
+    } catch (error) {
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({
+        code: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: 'Internal server error',
+        error: error.message,
+      });
+    }
   }
 
   @Post('/flushdb')

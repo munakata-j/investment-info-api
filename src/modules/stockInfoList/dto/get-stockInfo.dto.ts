@@ -1,6 +1,3 @@
-// stock-info.dto.ts
-import { StockInfo } from '../stockInfo.entity';
-
 export class GetStockInfoDto {
   id: number;
   code: string;

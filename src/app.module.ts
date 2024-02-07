@@ -5,6 +5,7 @@ import { StockInfoModule } from './modules/stockInfoList/stockInfo.module';
 import { StockInfo } from './modules/stockInfoList/stockInfo.entity';
 import { RedisModule } from '@nestjs-modules/ioredis';
 import { exportToCsvModule } from './modules/exportToCsv/exportToCsv.module';
+import { StockInfoDetailModule } from "./modules/stockInfoDetail/stockInfoDetail.module";
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { exportToCsvModule } from './modules/exportToCsv/exportToCsv.module';
     }),
     StockInfoModule,
     exportToCsvModule,
+    StockInfoDetailModule,
   ],
 })
 export class AppModule {}

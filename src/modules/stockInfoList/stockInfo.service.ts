@@ -26,7 +26,7 @@ export class StockInfoService {
     const queryBuilder =
       this.stockInfoRepository.createQueryBuilder('jp_stockinfo');
 
-    const pageSize: number = 100;
+    const pageSize: number = 20;
     if (code) {
       queryBuilder.andWhere('jp_stockInfo.code = :code', { code });
     }
