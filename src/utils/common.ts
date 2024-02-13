@@ -72,6 +72,6 @@ export function calculateFinancialIndicators(
     CashFlowsFromFinancingActivities: data?.CashFlowsFromFinancingActivities,
     CashFlowsFromInvestingActivities: data?.CashFlowsFromInvestingActivities,
     CashFlowsFromOperatingActivities: data?.CashFlowsFromOperatingActivities,
-    DisclosedData: data?.DisclosedData,
+    DisclosedDate: data?.DisclosedDate,
   };
 }

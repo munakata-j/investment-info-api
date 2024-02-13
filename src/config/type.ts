@@ -19,5 +19,5 @@ export interface FinancialMetrics {
   CashFlowsFromInvestingActivities: number;
   CashFlowsFromFinancingActivities: number;
   CashAndEquivalents: number;
-  DisclosedData: string;
+  DisclosedDate: string;
 }
