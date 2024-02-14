@@ -19,6 +19,7 @@ export class CsvExportService {
             companyname: data?.companyname,
             sectorCode: data?.sectorCode,
             sectorName: data?.sectorName,
+            marketName: data?.marketName,
             NetSales: data?.NetSales,
             OperatingProfit: data?.OperatingProfit,
             Profit: data?.Profit,
@@ -37,7 +38,7 @@ export class CsvExportService {
               data?.CashFlowsFromInvestingActivities,
             CashFlowsFromOperatingActivities:
               data?.CashFlowsFromOperatingActivities,
-            DisclosedData: data?.DisclosedData,
+            DisclosedDate: data?.DisclosedDate,
           };
         }),
       );
